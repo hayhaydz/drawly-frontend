@@ -1,14 +1,11 @@
-import { Layout, Login, Canvas } from '../components';
-import { CanvasProvider } from '../context/CanvasContext';
+import { Layout, Login } from '../components';
 
 const HomePage = () => {
 
   return (
     <Layout>
+      <h1>Home page</h1>
       {/* <Login /> */}
-      <CanvasProvider>
-        <Canvas />
-      </CanvasProvider>
     </Layout>
   )
 }

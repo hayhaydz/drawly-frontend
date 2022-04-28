@@ -4,6 +4,9 @@ const CanvasContext = createContext();
 
 export const CanvasProvider = ({ children }) => {
     const [isDrawing, setIsDrawing] = useState(false);
+    const [colour, setColour] = useState({});
+    const [strokeWidth, setStrokeWidth] = useState(0);
+
     const canvasRef = useRef(null);
     const contextRef = useRef(null);
 
@@ -34,6 +37,16 @@ export const CanvasProvider = ({ children }) => {
         setIsDrawing(false);
     }
 
+    const changeColour = (c) => {
+        contextRef.current.strokeStyle = `rgb(${c.r}, ${c.g}, ${c.b})`;
+        setColour(c);
+    }
+
+    const changeStrokeWidth = (sw) => {
+        contextRef.current.lineWidth = sw;
+        setStrokeWidth(sw);
+    }
+
     const draw = ({ nativeEvent }) => {
         if(isDrawing) {
             const { offsetX, offsetY } = nativeEvent;
@@ -57,8 +70,11 @@ export const CanvasProvider = ({ children }) => {
                 prepareCanvas,
                 handleMouseDown,
                 handleMouseUp,
+                changeColour,
+                changeStrokeWidth,
                 clearCanvas,
-                draw
+                draw,
+                isDrawing
             }}
         >
             {children}
