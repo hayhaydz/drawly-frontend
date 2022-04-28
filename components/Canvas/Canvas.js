@@ -7,6 +7,7 @@ const Canvas = () => {
         prepareCanvas,
         handleMouseDown,
         handleMouseUp,
+        handleClick,
         draw
     } = useCanvas();
 
@@ -19,6 +20,7 @@ const Canvas = () => {
             onMouseDown={handleMouseDown}
             onMouseUp={handleMouseUp}
             onMouseMove={draw}
+            onClick={handleClick}
             ref={canvasRef}
         />
     )

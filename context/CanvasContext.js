@@ -1,9 +1,14 @@
-import { createContext, useContext, useState, useRef } from 'react'
+import { createContext, useContext, useState, useRef } from 'react';
+import { Colours, Strokes, Tools } from '../constants';
 
 const CanvasContext = createContext();
 
 export const CanvasProvider = ({ children }) => {
     const [isDrawing, setIsDrawing] = useState(false);
+    const [selectedTool, setSelectedTool] = useState(Tools.PAINTBRUSH);
+    const [selectedColour, setSelectedColour] = useState(Colours.BLACK);
+    const [selectedStroke, setSelectedStroke] = useState(Strokes.SMALL);
+
     const [colour, setColour] = useState({});
     const [strokeWidth, setStrokeWidth] = useState(0);
 
@@ -27,24 +32,41 @@ export const CanvasProvider = ({ children }) => {
 
     const handleMouseDown = ({ nativeEvent }) => {
         const { offsetX, offsetY } = nativeEvent;
-        contextRef.current.beginPath();
-        contextRef.current.moveTo(offsetX, offsetY);
-        setIsDrawing(true);
+
+        if(selectedTool === Tools.PAINTBRUSH) {
+            contextRef.current.beginPath();
+            contextRef.current.moveTo(offsetX, offsetY);
+            setIsDrawing(true);
+        }
     }
 
     const handleMouseUp = () => {
-        contextRef.current.closePath();
-        setIsDrawing(false);
+        if(selectedTool === Tools.PAINTBRUSH) {
+            contextRef.current.closePath();
+            setIsDrawing(false);
+        }
+    }
+
+    const handleClick = () => {
+        if(selectedTool === Tools.BUCKET_FILL) {
+            console.log('Hello world. Bucket filling...');
+        }
+    }
+
+    const changeTool = (tool) => {
+        setSelectedTool(Tools[tool]);
     }
 
     const changeColour = (c) => {
         contextRef.current.strokeStyle = `rgb(${c.r}, ${c.g}, ${c.b})`;
         setColour(c);
+        setSelectedColour(Colours[c.name]);
     }
 
     const changeStrokeWidth = (sw) => {
-        contextRef.current.lineWidth = sw;
-        setStrokeWidth(sw);
+        contextRef.current.lineWidth = sw.width;
+        setStrokeWidth(sw.width);
+        setSelectedStroke(Strokes[sw.name]);
     }
 
     const draw = ({ nativeEvent }) => {
@@ -70,11 +92,16 @@ export const CanvasProvider = ({ children }) => {
                 prepareCanvas,
                 handleMouseDown,
                 handleMouseUp,
+                handleClick,
+                changeTool,
                 changeColour,
                 changeStrokeWidth,
                 clearCanvas,
                 draw,
-                isDrawing
+                isDrawing,
+                selectedTool,
+                selectedColour,
+                selectedStroke,
             }}
         >
             {children}
