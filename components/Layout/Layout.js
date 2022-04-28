@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { Toaster } from 'react-hot-toast';
 
 const Layout = ({ children }) => {
     return (
@@ -10,6 +11,7 @@ const Layout = ({ children }) => {
             <main>
                 {children}
             </main>
+            <Toaster position="bottom-center" gutter={56} />
         </>
     )
 }

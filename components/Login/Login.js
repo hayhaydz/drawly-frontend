@@ -1,58 +1,60 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Flex, Heading, IconButton, Input, useToast } from '@chakra-ui/react';
 import { RiArrowRightLine } from 'react-icons/ri';
+import toast from 'react-hot-toast';
 import { useMainContext } from '../../context/MainContext';
 import { useUsersContext } from '../../context/UsersContext';
 import { useSocketContext } from '../../context/SocketContext';
+import { ToastNotification } from '../';
 
 const Login = () => {
-    const socket = useSocketContext();
     const { name, setName, room, setRoom } = useMainContext();
     const { setUsers } = useUsersContext();
-    const toast = useToast();
     const router = useRouter();
+    const socket = useSocketContext();
 
     useEffect(() => {
-        socket.on('users', users => {
-            setUsers(users);
-        })
-    });
+        if(socket) {
+            socket.on('users', users => {
+                setUsers(users);
+            })
+        }
+    }, [socket]);
 
     const handleSubmit = () => {
         socket.emit('login', { name, room }, error => {
             if(error) {
                 console.log(error);
-                return toast({
-                    position: "top",
-                    title: "Error",
-                    description: error,
-                    status: "error",
-                    duration: 5000,
-                    isClosable: true
-                });
+                return toast.custom(t => (
+                    <ToastNotification 
+                        t={t}
+                        title="Error"
+                        message={error}
+                    />
+                ));
             }
             router.push('/chat');
-            return toast({
-                position: "top",
-                title: "Hey there",
-                description: `Welcome to ${room}`,
-                status: "success",
-                duration: 5000,
-                isClosable: true
-            })
+            return toast.custom(t => (
+                <ToastNotification 
+                    t={t}
+                    title="Hey there"
+                    message={`Welcome to ${room}`}
+                />
+            ));
         })
     }
 
     return (
-        <Flex className="login" flexDirection='column' mb='8'>
-            <Heading as="h1" size="4x1" textAlign='center' mb='8' fontWeight='600'>Drawly.io</Heading>
-            <Flex className="form" gap='1rem' flexDirection={{ base: 'column', md: 'row' }}>
-                <Input variants='filled' mr={{ base: "0", md: "4" }} mb={{ base: "4", md: "0" }} type="text" placeholder="User name" value={name} onChange={e => setName(e.target.value)} />
-                <Input variants='filled' mr={{ base: "0", md: "4" }} mb={{ base: "4", md: "0" }} type="text" placeholder="Room name" value={room} onChange={e => setRoom(e.target.value)} />
-                <IconButton colorScheme='blue' isRound='true' icon={<RiArrowRightLine/>} onClick={handleSubmit}></IconButton>
-            </Flex>
-        </Flex>
+        <div className="w-screen h-screen flex items-center justify-center">
+            <div className="max-w-lg w-full max-h-lg h-96 bg-cyan-400 rounded p-6">
+                <h1 className="text-lg font-bold mb-4">Drawly.io</h1>
+                <div className="flex flex-col">
+                    <input type="text" placeholder="User name" value={name} onChange={e => setName(e.target.value)} />
+                    <input type="text" placeholder="Room name" value={room} onChange={e => setRoom(e.target.value)} />
+                    <button onClick={handleSubmit}>Login <RiArrowRightLine/></button>
+                </div>
+            </div>
+        </div>
     )
 }
 export default Login;
