@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useRef } from 'react';
 import { Colours, Strokes, Tools } from '../constants';
+import { PaintbrushHandler, BucketFillHandler } from '../utils';
 
 const CanvasContext = createContext();
 
@@ -34,22 +35,21 @@ export const CanvasProvider = ({ children }) => {
         const { offsetX, offsetY } = nativeEvent;
 
         if(selectedTool === Tools.PAINTBRUSH) {
-            contextRef.current.beginPath();
-            contextRef.current.moveTo(offsetX, offsetY);
+            PaintbrushHandler.mouseDown(contextRef, offsetX, offsetY);
             setIsDrawing(true);
         }
     }
 
     const handleMouseUp = () => {
         if(selectedTool === Tools.PAINTBRUSH) {
-            contextRef.current.closePath();
+            PaintbrushHandler.mouseUp(contextRef);
             setIsDrawing(false);
         }
     }
 
     const handleClick = () => {
         if(selectedTool === Tools.BUCKET_FILL) {
-            console.log('Hello world. Bucket filling...');
+            BucketFillHandler.click(contextRef);
         }
     }
 
