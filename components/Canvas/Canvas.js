@@ -7,8 +7,10 @@ const Canvas = () => {
         prepareCanvas,
         handleMouseDown,
         handleMouseUp,
-        handleClick,
-        draw
+        handleMouseMove,
+        handleMouseLeave,
+        selectedTool,
+        isPanning
     } = useCanvas();
 
     useEffect(() => {
@@ -19,9 +21,10 @@ const Canvas = () => {
         <canvas
             onMouseDown={handleMouseDown}
             onMouseUp={handleMouseUp}
-            onMouseMove={draw}
-            onClick={handleClick}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
             ref={canvasRef}
+            className={(selectedTool === 'PAN' ? (isPanning ? 'cursor-grabbing' : 'cursor-grab') : 'cursor-auto')}
         />
     )
 }

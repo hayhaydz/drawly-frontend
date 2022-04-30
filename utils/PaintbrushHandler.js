@@ -1,11 +1,24 @@
 
-const mouseDown = (context, x, y) => {
-    context.current.beginPath();
-    context.current.moveTo(x, y);
-}
+export default class PaintbrushHandler {
+    constructor(context) {
+        this.context = context;
+    }
 
-const mouseUp = (context) => {
-    context.current.closePath();
-}
+    mouseDown(x, y) {
+        this.context.current.beginPath();
+        this.context.current.moveTo(x, y);
+    }
 
-export default { mouseDown, mouseUp };
+    mouseUp() {
+        this.context.current.closePath();
+    }
+
+    mouseMove(x, y) {
+        this.context.current.lineTo(x, y);
+        this.context.current.stroke();
+    }
+
+    mouseLeave() {
+        this.context.current.closePath();
+    }
+}

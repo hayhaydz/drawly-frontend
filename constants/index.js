@@ -2,7 +2,7 @@ import { Enum } from './enum';
 
 export const Tools = new Enum (
   'PAINTBRUSH',
-  'BUCKET_FILL',
+  'PAN'
 );
 
 export const Colours = new Enum (

@@ -1,2 +1,2 @@
 export { default as PaintbrushHandler } from './PaintbrushHandler';
-export { default as BucketFillHandler } from './BucketFillHandler';
+export { default as PanZoomHandler } from './PanZoomHandler';
