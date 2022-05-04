@@ -7,7 +7,7 @@ const CanvasClearButton = () => {
 
     return (
         <CanvasButton 
-            handleClick={clearCanvas} 
+            handleClick={clearCanvas}
             label="Clear" 
             icon={<MdDeleteForever/>} 
         />

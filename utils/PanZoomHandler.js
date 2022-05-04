@@ -1,27 +1,23 @@
 
 export default class PanZoomHandler {
-    constructor(context) {
-        this.context = context;
+    constructor() {
+        this.ORIGIN = Object.freeze({ x: 0, y: 0 });
+        this.ZOOM_SENSITIVITY = 500;
+        this.ratio = 1;
     }
 
-    // https://codepen.io/chengarda/pen/wRxoyB?editors=0010
-    redraw() {
-
-    }
-    
-    pointerDown() {
-
+    diffPoints(p1, p2) {
+        return { x: p1.x - p2.x, y: p1.y - p2.y };
     }
 
-    pointerUp() {
-
+    addPoints(p1, p2) {
+        return { x: p1.x + p2.x, y: p1.y + p2.y };
     }
 
-    pointerMove() {
-
+    scalePoint(point, scale) {
+        return { x: point.x / scale, y: point.y / scale };
     }
 
-    adjustZoom() {
+    // https://codepen.io/chengarda/pen/wRxoyB
 
-    }
 }
