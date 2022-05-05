@@ -1,24 +1,11 @@
 
-export default class PaintbrushHandler {
-    constructor(context) {
-        this.context = context;
-    }
-
-    mouseDown(x, y) {
-        this.context.current.beginPath();
-        this.context.current.moveTo(x, y);
-    }
-
-    mouseUp() {
-        this.context.current.closePath();
-    }
-
-    mouseMove(x, y) {
-        this.context.current.lineTo(x, y);
-        this.context.current.stroke();
-    }
-
-    mouseLeave() {
-        this.context.current.closePath();
-    }
+const mouseDown = (context, x, y) => {
+    context.current.beginPath();
+    context.current.moveTo(x, y);
 }
+
+const mouseUp = (context) => {
+    context.current.closePath();
+}
+
+export default { mouseDown, mouseUp };

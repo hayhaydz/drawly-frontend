@@ -7,7 +7,5 @@ export { default as CanvasToolbar } from './CanvasToolbar/CanvasToolbar';
 export { default as CanvasButton } from './CanvasButton/CanvasButton';
 export { default as CanvasTools } from './CanvasTools/CanvasTools';
 export { default as CanvasClearButton } from './CanvasClearButton/CanvasClearButton';
-export { default as CanvasResetButton } from './CanvasResetButton/CanvasResetButton';
 export { default as CanvasColourSwatch } from './CanvasColourSwatch/CanvasColourSwatch';
 export { default as CanvasStrokeWidth } from './CanvasStrokeWidth/CanvasStrokeWidth';
-export { default as CanvasZoom } from './CanvasZoom/CanvasZoom';

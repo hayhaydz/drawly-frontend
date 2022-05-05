@@ -1,4 +1,4 @@
-import { Layout, Canvas, CanvasToolbar, CanvasZoom } from "../components";
+import { Layout, Canvas, CanvasToolbar } from "../components";
 import { CanvasProvider } from '../context/CanvasContext';
 
 const CanvasPage = () => {
@@ -8,7 +8,6 @@ const CanvasPage = () => {
             <CanvasProvider>
                 <Canvas />
                 <CanvasToolbar />
-                <CanvasZoom />
             </CanvasProvider>
         </Layout>
     )
