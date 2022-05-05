@@ -38,10 +38,12 @@ export const CanvasProvider = ({ children }) => {
     const lastMousePosRef = useRef(panZoom.ORIGIN);
     const lastOffsetRef = useRef(panZoom.ORIGIN);
 
+    // update last offset
     useEffect(() => {
         lastOffsetRef.current = offset;
     }, [offset]);
 
+    // reset
     const reset = useCallback((context) => {
         if(context && !isResetRef.current) {
             context.canvas.width = canvasSize.width * panZoom.ratio;
@@ -68,28 +70,49 @@ export const CanvasProvider = ({ children }) => {
         if(context) reset(context);
     }
 
+    // mouse functions
     const mouseMove = useCallback((event) => {
         if(context) {
-            const lastMousePos = lastMousePosRef.current;
-            const currentMousePos = { x: event.pageX, y: event.pageY };
-            lastMousePosRef.current = currentMousePos;
-
-            const mouseDiff = panZoom.diffPoints(currentMousePos, lastMousePos);
-            setOffset((prevOffset) => panZoom.addPoints(prevOffset, mouseDiff));
+            switch(selectedTool) {
+                case Tools.PAINTBRUSH:
+                    context.lineTo(event.offsetX, event.offsetY);
+                    context.stroke();
+                    break;
+                case Tools.PAN:
+                    const lastMousePos = lastMousePosRef.current;
+                    const currentMousePos = { x: event.pageX, y: event.pageY };
+                    lastMousePosRef.current = currentMousePos;
+        
+                    const mouseDiff = panZoom.diffPoints(currentMousePos, lastMousePos);
+                    setOffset((prevOffset) => panZoom.addPoints(prevOffset, mouseDiff));
+                    break;
+            }
         }
-    }, [context]);
+    }, [context, selectedTool]);
 
     const mouseUp = useCallback(() => {
+        if(selectedTool === Tools.PAINTBRUSH) {
+            context.closePath();
+        }
+
         document.removeEventListener("mousemove", mouseMove);
         document.removeEventListener("mouseup", mouseUp);
-    }, [mouseMove]);
+    }, [context, selectedTool, mouseMove]);
 
     const handleMouseDown = useCallback((event) => {
-        document.addEventListener("mousemove", mouseMove);
-        document.addEventListener("mouseUp", mouseUp);
-        lastMousePosRef.current = { x: event.pageX, y: event.pageY };
-    }, [mouseMove, mouseUp]);
 
+        lastMousePosRef.current = { x: event.pageX, y: event.pageY };
+
+        if(selectedTool === Tools.PAINTBRUSH) {
+            context.beginPath();
+            context.moveTo(event.offsetX, event.offsetY);
+        }
+
+        document.addEventListener("mousemove", mouseMove);
+        document.addEventListener("mouseup", mouseUp);
+    }, [context, selectedTool, mouseMove, mouseUp]);
+
+    // setup the canvas and context
     useLayoutEffect(() => {
         if(canvasRef.current) {
             const renderCtx = canvasRef.current.getContext('2d');
@@ -100,6 +123,7 @@ export const CanvasProvider = ({ children }) => {
         }
     }, [reset, canvasSize.width, canvasSize.height]);
 
+    // pan when the offset or scale changes
     useLayoutEffect(() => {
         if(context && lastOffsetRef.current) {
             let offsetDiff = panZoom.scalePoint(panZoom.diffPoints(offset, lastOffsetRef.current), scale);
@@ -109,6 +133,7 @@ export const CanvasProvider = ({ children }) => {
         }
     }, [context, offset, scale]);
 
+    // draw on the canvas
     useLayoutEffect(() => {
         if(context) {
             const squareSize = 20;
@@ -128,6 +153,7 @@ export const CanvasProvider = ({ children }) => {
         }
     }, [canvasSize.width, canvasSize.height, context, scale, offset, viewportTopLeft]);
 
+    // event listener on the canvas for mouse position
     useEffect(() => {
         const canvasElem = canvasRef.current;
         if(canvasElem === null) return;
@@ -152,6 +178,7 @@ export const CanvasProvider = ({ children }) => {
         };
     }, []);
 
+    // event listener on canvas for zoom / mouse wheel
     useEffect(() => {
         const canvasElem = canvasRef.current;
         if(canvasElem === null) return;

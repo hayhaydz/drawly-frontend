@@ -3,6 +3,8 @@ export default class PanZoomHandler {
     constructor() {
         this.ORIGIN = Object.freeze({ x: 0, y: 0 });
         this.ZOOM_SENSITIVITY = 500;
+        this.MIN_ZOOM = 100;
+        this.MAX_ZOOM = 4000;
         this.ratio = 1;
     }
 
