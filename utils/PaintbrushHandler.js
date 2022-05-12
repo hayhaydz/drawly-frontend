@@ -1,11 +1,14 @@
+const reposition = (event, canvas, coord) => {
+    coord.x = event.clientX - canvas.current.offsetLeft;
+    coord.y = event.clientY - canvas.current.offsetTop;
+}
 
-const mouseDown = (context, x, y) => {
+const draw = (canvas, context, event, coord) => {
     context.current.beginPath();
-    context.current.moveTo(x, y);
+    context.current.moveTo(coord.x, coord.y);
+    reposition(event, canvas, coord);
+    context.current.lineTo(coord.x, coord.y);
+    context.current.stroke();
 }
 
-const mouseUp = (context) => {
-    context.current.closePath();
-}
-
-export default { mouseDown, mouseUp };
+export default { reposition, draw };

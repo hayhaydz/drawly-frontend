@@ -6,9 +6,7 @@ const Canvas = () => {
         canvasRef,
         prepareCanvas,
         handleMouseDown,
-        handleMouseUp,
         handleClick,
-        draw
     } = useCanvas();
 
     useEffect(() => {
@@ -18,9 +16,6 @@ const Canvas = () => {
     return  (
         <canvas
             onMouseDown={handleMouseDown}
-            onMouseUp={handleMouseUp}
-            onMouseMove={draw}
-            onClick={handleClick}
             ref={canvasRef}
         />
     )

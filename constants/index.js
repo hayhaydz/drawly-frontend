@@ -1,8 +1,7 @@
 import { Enum } from './enum';
 
 export const Tools = new Enum (
-  'PAINTBRUSH',
-  'BUCKET_FILL',
+  'PAINTBRUSH'
 );
 
 export const Colours = new Enum (

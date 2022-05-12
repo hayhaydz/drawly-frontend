@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useRef } from 'react';
 import { Colours, Strokes, Tools } from '../constants';
-import { PaintbrushHandler, BucketFillHandler } from '../utils';
+import { PaintbrushHandler } from '../utils';
 
 const CanvasContext = createContext();
 
@@ -12,6 +12,7 @@ export const CanvasProvider = ({ children }) => {
 
     const [colour, setColour] = useState({});
     const [strokeWidth, setStrokeWidth] = useState(0);
+    const coord = {x: 0, y: 0};
 
     const canvasRef = useRef(null);
     const contextRef = useRef(null);
@@ -31,26 +32,28 @@ export const CanvasProvider = ({ children }) => {
         contextRef.current = context;
     }
 
-    const handleMouseDown = ({ nativeEvent }) => {
-        const { offsetX, offsetY } = nativeEvent;
-
+    const handleMouseDown = (event) => {
         if(selectedTool === Tools.PAINTBRUSH) {
-            PaintbrushHandler.mouseDown(contextRef, offsetX, offsetY);
             setIsDrawing(true);
+            PaintbrushHandler.reposition(event, canvasRef, coord);
         }
+
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseup', handleMouseUp);
+    }
+
+    const handleMouseMove = (event) => {
+        PaintbrushHandler.draw(canvasRef, contextRef, event, coord);
     }
 
     const handleMouseUp = () => {
         if(selectedTool === Tools.PAINTBRUSH) {
-            PaintbrushHandler.mouseUp(contextRef);
             setIsDrawing(false);
         }
-    }
 
-    const handleClick = () => {
-        if(selectedTool === Tools.BUCKET_FILL) {
-            BucketFillHandler.click(contextRef);
-        }
+        console.log('cheese sticks');
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
     }
 
     const changeTool = (tool) => {
@@ -69,14 +72,6 @@ export const CanvasProvider = ({ children }) => {
         setSelectedStroke(Strokes[sw.name]);
     }
 
-    const draw = ({ nativeEvent }) => {
-        if(isDrawing) {
-            const { offsetX, offsetY } = nativeEvent;
-            contextRef.current.lineTo(offsetX, offsetY);
-            contextRef.current.stroke();
-        }
-    }
-
     const clearCanvas = () => {
         const canvas = canvasRef.current;
         const context = canvas.getContext('2d');
@@ -91,13 +86,10 @@ export const CanvasProvider = ({ children }) => {
                 contextRef,
                 prepareCanvas,
                 handleMouseDown,
-                handleMouseUp,
-                handleClick,
                 changeTool,
                 changeColour,
                 changeStrokeWidth,
                 clearCanvas,
-                draw,
                 isDrawing,
                 selectedTool,
                 selectedColour,

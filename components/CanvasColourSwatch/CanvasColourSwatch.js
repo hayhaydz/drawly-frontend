@@ -15,7 +15,7 @@ const CanvasColourSwatch = () => {
         <div className="flex flex-col gap-0.5">
             {
                 colours.map((colour, i) => (
-                    <button key={i} onClick={() => changeColour(colour)} className={'relative w-36[px] h-[36px] aspect-square rounded-md before:block before:absolute before:top-0 before:left-1 before:w-full before:h-full before:border-cyan-400 ' + (selectedColour === colour.name ? 'before:border-r-4' : 'before:border-r-0')} style={{ backgroundColor: `rgb(${colour.r}, ${colour.g}, ${colour.b})`}}></button>
+                    <button key={i} onClick={() => changeColour(colour)} className={'relative w-[36px] h-[36px] aspect-square rounded-md before:block before:absolute before:top-0 before:left-1 before:w-full before:h-full before:border-cyan-400 ' + (selectedColour === colour.name ? 'before:border-r-4' : 'before:border-r-0')} style={{ backgroundColor: `rgb(${colour.r}, ${colour.g}, ${colour.b})`}}></button>
                 ))
             }
         </div>

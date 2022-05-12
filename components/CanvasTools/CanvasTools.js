@@ -1,12 +1,10 @@
 import { GiPaintBrush } from 'react-icons/gi';
-import { GoPaintcan } from 'react-icons/go';
 import { useCanvas } from '../../context/CanvasContext';
 import { CanvasButton } from '../';
 
 const CanvasTools = () => {
     const tools = [
-        {name: 'PAINTBRUSH', label: 'Paintbrush tool', icon: <GiPaintBrush />},
-        {name: 'BUCKET_FILL', label: 'Bucket fill tool', icon: <GoPaintcan/>}
+        {name: 'PAINTBRUSH', label: 'Paintbrush tool', icon: <GiPaintBrush />}
     ]
 
     const { changeTool, selectedTool } = useCanvas();

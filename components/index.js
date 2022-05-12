@@ -9,3 +9,4 @@ export { default as CanvasTools } from './CanvasTools/CanvasTools';
 export { default as CanvasClearButton } from './CanvasClearButton/CanvasClearButton';
 export { default as CanvasColourSwatch } from './CanvasColourSwatch/CanvasColourSwatch';
 export { default as CanvasStrokeWidth } from './CanvasStrokeWidth/CanvasStrokeWidth';
+export { default as CanvasAvatars } from './CanvasAvatars/CanvasAvatars';
