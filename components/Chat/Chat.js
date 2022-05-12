@@ -23,7 +23,7 @@ const Chat = () => {
         window.onpopstate = e => logout();
     }, []);
 
-    useEffect(() => { if(!name) return router.push('/') }, [router, name]);
+    useEffect(() => { if(!name) router.push('/') }, [router, name]);
 
     useEffect(() => {
         if(socket) {

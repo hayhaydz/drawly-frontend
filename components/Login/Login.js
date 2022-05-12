@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { RiArrowRightLine } from 'react-icons/ri';
 import toast from 'react-hot-toast';
 import { useMainContext } from '../../context/MainContext';
 import { useUsersContext } from '../../context/UsersContext';
@@ -49,9 +48,9 @@ const Login = () => {
             <div className="max-w-lg w-full max-h-lg h-96 bg-cyan-400 rounded p-6">
                 <h1 className="text-lg font-bold mb-4">Drawly.io</h1>
                 <div className="flex flex-col">
-                    <input type="text" placeholder="User name" value={name} onChange={e => setName(e.target.value)} />
-                    <input type="text" placeholder="Room name" value={room} onChange={e => setRoom(e.target.value)} />
-                    <button onClick={handleSubmit}>Login <RiArrowRightLine/></button>
+                    <input type="text" placeholder="User name" value={name} onChange={e => setName(e.target.value)} className="mb-2 p-2 rounded-md" />
+                    <input type="text" placeholder="Room name" value={room} onChange={e => setRoom(e.target.value)} className="p-2 rounded-md" />
+                    <button onClick={handleSubmit} className="flex items-center justify-center mt-4 border-2 border-gray-800 font-bold p-1">Login</button>
                 </div>
             </div>
         </div>
