@@ -32,12 +32,12 @@ const Login = () => {
                     />
                 ));
             }
-            router.push('/chat');
+            router.push('/canvas');
             return toast.custom(t => (
                 <ToastNotification 
                     t={t}
                     title="Hey there"
-                    message={`Welcome to ${room}`}
+                    message={`Welcome to room ${room}`}
                 />
             ));
         })
@@ -50,7 +50,7 @@ const Login = () => {
                 <div className="flex flex-col">
                     <input type="text" placeholder="User name" value={name} onChange={e => setName(e.target.value)} className="mb-2 p-2 rounded-md" />
                     <input type="text" placeholder="Room name" value={room} onChange={e => setRoom(e.target.value)} className="p-2 rounded-md" />
-                    <button onClick={handleSubmit} className="flex items-center justify-center mt-4 border-2 border-gray-800 font-bold p-1">Login</button>
+                    <button onClick={handleSubmit} className="flex items-center justify-center mt-4 border-2 border-gray-800 font-bold p-1">Join</button>
                 </div>
             </div>
         </div>
