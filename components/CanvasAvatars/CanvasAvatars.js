@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import ReactTooltip from 'react-tooltip';
 import { useUsersContext } from '../../context/UsersContext';
-import { useCanvas} from '../../context/CanvasContext';
+import { useCanvas } from '../../context/CollaborativeCanvasContext';
 
 
 const CanvasAvatars = () => {

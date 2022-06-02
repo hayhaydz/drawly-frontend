@@ -1,8 +1,7 @@
 import { GiPaintBrush } from 'react-icons/gi';
-import { useCanvas } from '../../context/CanvasContext';
 import { CanvasButton } from '../';
 
-const CanvasTools = () => {
+const CanvasTools = ({ useCanvas }) => {
     const tools = [
         {name: 'PAINTBRUSH', label: 'Paintbrush tool', icon: <GiPaintBrush />}
     ]

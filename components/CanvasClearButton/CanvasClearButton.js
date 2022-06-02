@@ -1,8 +1,7 @@
 import { MdDeleteForever } from 'react-icons/md';
-import { useCanvas } from '../../context/CanvasContext';
 import { CanvasButton } from '../';
 
-const CanvasClearButton = () => {
+const CanvasClearButton = ({ useCanvas }) => {
     const { clearCanvas } = useCanvas();
 
     return (

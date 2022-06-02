@@ -1,5 +1,5 @@
 import { Layout, Canvas, CanvasToolbar, CanvasAvatars } from "../components";
-import { CanvasProvider } from '../context/CanvasContext';
+import { CanvasProvider } from '../context/CollaborativeCanvasContext';
 
 const CanvasPage = () => {
 

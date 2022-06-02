@@ -1,6 +1,5 @@
-import { useCanvas } from '../../context/CanvasContext';
 
-const CanvasColourSwatch = () => {
+const CanvasColourSwatch = ({ useCanvas }) => {
     const colours = [
         {name: 'WHITE', r: 255, g: 255, b: 255},
         {name: 'BLACK', r: 0, g: 0, b: 0},

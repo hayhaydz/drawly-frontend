@@ -1,8 +1,7 @@
 import { BsCircleFill } from 'react-icons/bs';
-import { useCanvas } from '../../context/CanvasContext';
 import { CanvasButton } from '../';
 
-const CanvasStrokeWidth = () => {
+const CanvasStrokeWidth = ({ useCanvas }) => {
     const strokeWidths = [
         {name: 'SMALL', width: 5, label: 'Small stroke width'},
         {name: 'MEDIUM', width: 10, label: 'Medium stroke width'}, 
