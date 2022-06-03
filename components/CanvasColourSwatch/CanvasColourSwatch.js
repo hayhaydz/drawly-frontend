@@ -1,21 +1,28 @@
+import { useState } from 'react';
+import { BlockPicker } from 'react-color';
 
 const CanvasColourSwatch = ({ useCanvas }) => {
-    const colours = [
-        {name: 'WHITE', r: 255, g: 255, b: 255},
-        {name: 'BLACK', r: 0, g: 0, b: 0},
-        {name: 'RED', r: 255, g: 0, b: 0},
-        {name: 'GREEN', r: 0, g: 255, b: 0},
-        {name: 'BLUE', r: 0, g: 0, b: 255}
-    ];
-    
-    const { changeColour, selectedColour } = useCanvas();
+    const [isPickingColour, setIsPickingColour] = useState(false);
+    const { changeColour, colour } = useCanvas();
 
     return (
-        <div className="flex flex-col gap-0.5">
-            {
-                colours.map((colour, i) => (
-                    <button key={i} onClick={() => changeColour(colour)} className={'relative w-[36px] h-[36px] aspect-square rounded-md before:block before:absolute before:top-0 before:left-1 before:w-full before:h-full before:border-cyan-400 ' + (selectedColour === colour.name ? 'before:border-r-4' : 'before:border-r-0')} style={{ backgroundColor: `rgb(${colour.r}, ${colour.g}, ${colour.b})`}}></button>
-                ))
+        <div className="relative z-50 flex flex-col gap-0.5">
+            <button 
+                onClick={() => setIsPickingColour(!isPickingColour)}
+                aria-label="Brush colour" 
+                title="Brush colour"
+                className="relative z-40 w-[36px] h-[36px] aspect-square rounded-md" 
+                style={{ backgroundColor: `rgb(${colour.r}, ${colour.g}, ${colour.b})`}}
+            >
+            </button>
+            { isPickingColour &&
+                <div class="absolute z-30 left-[48px] top-0">
+                    <div 
+                        onMouseDown={() => setIsPickingColour(!isPickingColour)}
+                        class="fixed inset-0"
+                    ></div>
+                    <BlockPicker color={colour} onChange={changeColour} triangle="hide" />
+                </div>
             }
         </div>
     )

@@ -1,17 +1,15 @@
 import { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { useSocketContext } from './SocketContext';
-import { Colours, Strokes, Tools } from '../constants';
+import { Tools } from '../constants';
 
 const CanvasContext = createContext();
 
 export const CanvasProvider = ({ children }) => {
     const [isDrawing, setIsDrawing] = useState(false);
     const [selectedTool, setSelectedTool] = useState(Tools.PAINTBRUSH);
-    const [selectedColour, setSelectedColour] = useState(Colours.BLACK);
-    const [selectedStroke, setSelectedStroke] = useState(Strokes.SMALL);
 
-    const [colour, setColour] = useState({r: 0, g: 0, b: 0});
-    const [strokeWidth, setStrokeWidth] = useState(5);
+    const [colour, setColour] = useState({r: 0, g: 0, b: 0, a: 1});
+    const [strokeWidth, setStrokeWidth] = useState(4);
     const coord = {x: 0, y: 0};
 
     const canvasRef = useRef(null);
@@ -33,6 +31,8 @@ export const CanvasProvider = ({ children }) => {
         context.strokeStyle = colour;
         context.lineWidth = strokeWidth;
         contextRef.current = context;
+        context.fillStyle = 'white';
+        context.fillRect(0, 0, canvas.width, canvas.height);
     }
 
     const handleMouseDown = (event) => {
@@ -48,7 +48,7 @@ export const CanvasProvider = ({ children }) => {
 
     const handleMouseMove = (event) => {
         contextRef.current.lineWidth = strokeWidth;
-        contextRef.current.strokeStyle = `rgb(${colour.r}, ${colour.g}, ${colour.b})`;
+        contextRef.current.strokeStyle = `rgba(${colour.r}, ${colour.g}, ${colour.b}, ${colour.a})`;
 
         contextRef.current.beginPath();
         contextRef.current.moveTo(coord.x, coord.y);
@@ -76,24 +76,21 @@ export const CanvasProvider = ({ children }) => {
     }
 
     const changeColour = (c) => {
-        contextRef.current.strokeStyle = `rgb(${c.r}, ${c.g}, ${c.b})`;
-        socket.emit('changeColour', c);
-        setColour(c);
-        setSelectedColour(Colours[c.name]);
+        contextRef.current.strokeStyle = `rgba(${c.rgb.r}, ${c.rgb.g}, ${c.rgb.b}, ${c.rgb.a})`;
+        setColour(c.rgb);
     }
 
     const changeStrokeWidth = (sw) => {
-        contextRef.current.lineWidth = sw.width;
-        socket.emit('changeStrokeWidth', sw);
-        setStrokeWidth(sw.width);
-        setSelectedStroke(Strokes[sw.name]);
+        contextRef.current.lineWidth = sw;
+        setStrokeWidth(sw);
     }
 
-    const clearCanvas = () => {
-        const canvas = canvasRef.current;
-        const context = canvas.getContext('2d');
-        context.fillStyle = 'white';
-        context.fillRect(0, 0, canvas.width, canvas.height);
+    const saveCanvas = () => {
+        const l = document.createElement('a');
+        l.download = "drawly-canvas.jpg";
+        l.href = canvasRef.current.toDataURL();
+        l.click();
+        l.delete;
     }
 
     // Handle websockets
@@ -101,7 +98,7 @@ export const CanvasProvider = ({ children }) => {
         if(socket) {
             socket.on('startDraw', data => {
                 contextRef.current.lineWidth = data.sw;
-                contextRef.current.strokeStyle = `rgb(${data.c.r}, ${data.c.g}, ${data.c.b})`;
+                contextRef.current.strokeStyle = `rgba(${data.c.r}, ${data.c.g}, ${data.c.b}, ${data.c.a})`;
         
                 contextRef.current.beginPath();
                 contextRef.current.moveTo(data.coord.x, data.coord.y);
@@ -125,11 +122,11 @@ export const CanvasProvider = ({ children }) => {
                 changeTool,
                 changeColour,
                 changeStrokeWidth,
-                clearCanvas,
                 isDrawing,
                 selectedTool,
-                selectedColour,
-                selectedStroke
+                saveCanvas,
+                colour,
+                strokeWidth
             }}
         >
             {children}
