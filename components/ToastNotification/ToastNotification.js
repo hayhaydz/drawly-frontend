@@ -2,6 +2,7 @@ import toast from 'react-hot-toast';
 import { MdOutlineClose } from 'react-icons/md';
 import { HiLightningBolt } from 'react-icons/hi';
 
+// https://www.parmeetasija.com/blog/how-to-create-a-beautiful-toast-message-component-using-react-and-styled-components/
 const ToastNotification = ({
     t,
     bgColor,
@@ -14,7 +15,7 @@ const ToastNotification = ({
     }
 
     return (
-        <div className="flex flex-row items-center justify-between w-96 bg-gray-900 px-4 py-6 text-white shadow-2xl hover:shadow-none transform-gpu translate-y-0 hover:translate-y-1 rounded-xl relative transition-all duration-500 ease-in-out">
+        <div className="flex flex-row items-center justify-start w-96 bg-gray-900 px-4 py-6 text-white shadow-2xl hover:shadow-none transform-gpu translate-y-0 hover:translate-y-1 rounded-xl relative transition-all duration-500 ease-in-out">
             <div className="text-xl">
                 <HiLightningBolt />
             </div>
