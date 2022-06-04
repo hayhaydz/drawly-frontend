@@ -19,7 +19,6 @@ export const CanvasProvider = ({ children }) => {
     const { name, room } = useMainContext();
 
     // Canvas Functions
-
     const prepareCanvas = () => {
         const canvas = canvasRef.current;
         canvas.width = window.innerWidth * 2;
@@ -38,10 +37,17 @@ export const CanvasProvider = ({ children }) => {
     }
 
     const handleMouseDown = (event) => {
-        if(selectedTool === Tools.PAINTBRUSH) {
-            setIsDrawing(true);
-            coord.x = event.clientX - canvasRef.current.offsetLeft;
-            coord.y = event.clientY - canvasRef.current.offsetTop;
+        switch(selectedTool) {
+            case Tools.PAINTBRUSH:
+                setIsDrawing(true);
+                coord.x = event.clientX - canvasRef.current.offsetLeft;
+                coord.y = event.clientY - canvasRef.current.offsetTop;
+                break;
+            case Tools.ERASER:
+                setIsDrawing(true);
+                coord.x = event.clientX - canvasRef.current.offsetLeft;
+                coord.y = event.clientY - canvasRef.current.offsetTop;
+                break;
         }
 
         document.addEventListener('mousemove', handleMouseMove);
@@ -49,24 +55,48 @@ export const CanvasProvider = ({ children }) => {
     }
 
     const handleMouseMove = (event) => {
-        contextRef.current.lineWidth = strokeWidth;
-        contextRef.current.strokeStyle = `rgba(${colour.r}, ${colour.g}, ${colour.b}, ${colour.a})`;
-
-        contextRef.current.beginPath();
-        contextRef.current.moveTo(coord.x, coord.y);
-        socket.emit('startDrawing', { coord, c: colour, sw: strokeWidth });
-
-        coord.x = event.clientX - canvasRef.current.offsetLeft;
-        coord.y = event.clientY - canvasRef.current.offsetTop;
-
-        contextRef.current.lineTo(coord.x, coord.y);
-        contextRef.current.stroke();
-        socket.emit('endDrawing', { coord });
+        switch(selectedTool) {
+            case Tools.PAINTBRUSH:
+                contextRef.current.lineWidth = strokeWidth;
+                contextRef.current.strokeStyle = `rgba(${colour.r}, ${colour.g}, ${colour.b}, ${colour.a})`;
+        
+                contextRef.current.beginPath();
+                contextRef.current.moveTo(coord.x, coord.y);
+                socket.emit('startDrawing', { coord, c: colour, sw: strokeWidth });
+        
+                coord.x = event.clientX - canvasRef.current.offsetLeft;
+                coord.y = event.clientY - canvasRef.current.offsetTop;
+        
+                contextRef.current.lineTo(coord.x, coord.y);
+                contextRef.current.stroke();
+                socket.emit('endDrawing', { coord });
+                break;
+            case Tools.ERASER:
+                contextRef.current.lineWidth = strokeWidth;
+                contextRef.current.strokeStyle = `rgba(255, 255, 255, 1)`;
+        
+                contextRef.current.beginPath();
+                contextRef.current.moveTo(coord.x, coord.y);
+                socket.emit('startDrawing', { coord, c: {r: 255, g: 255, b: 255, a: 1}, sw: strokeWidth });
+        
+                coord.x = event.clientX - canvasRef.current.offsetLeft;
+                coord.y = event.clientY - canvasRef.current.offsetTop;
+        
+                contextRef.current.lineTo(coord.x, coord.y);
+                contextRef.current.stroke();
+                socket.emit('endDrawing', { coord });
+                break;
+        }
     }
 
     const handleMouseUp = () => {
-        if(selectedTool === Tools.PAINTBRUSH) {
-            setIsDrawing(false);
+        switch(selectedTool) {
+            case Tools.PAINTBRUSH:
+                setIsDrawing(false);
+                break;
+            case Tools.ERASER:
+                setIsDrawing(false);
+                break;
         }
 
         document.removeEventListener('mousemove', handleMouseMove);

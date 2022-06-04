@@ -8,7 +8,7 @@ const CanvasPage = () => {
     const { name, room } = useMainContext();
     const router = useRouter();
 
-    useEffect(() => { if(!name) router.push('/') }, [router, name]);
+    // useEffect(() => { if(!name) router.push('/') }, [router, name]);
 
     return (
         <Layout>

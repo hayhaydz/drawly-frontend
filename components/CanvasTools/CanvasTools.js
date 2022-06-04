@@ -1,9 +1,11 @@
 import { GiPaintBrush } from 'react-icons/gi';
+import { BsFillEraserFill } from 'react-icons/bs';
 import { CanvasButton } from '../';
 
 const CanvasTools = ({ useCanvas }) => {
     const tools = [
-        {name: 'PAINTBRUSH', label: 'Paintbrush tool', icon: <GiPaintBrush />}
+        {name: 'PAINTBRUSH', label: 'Paintbrush tool', icon: <GiPaintBrush />},
+        {name: 'ERASER', label: 'Eraser tool', icon: <BsFillEraserFill />}
     ]
 
     const { changeTool, selectedTool } = useCanvas();
