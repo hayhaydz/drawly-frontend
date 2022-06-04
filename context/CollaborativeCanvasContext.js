@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, useRef } from 'react';
+import { useMainContext } from '../context/MainContext';
 import { useSocketContext } from './SocketContext';
 import { Tools } from '../constants';
 
@@ -15,6 +16,7 @@ export const CanvasProvider = ({ children }) => {
     const canvasRef = useRef(null);
     const contextRef = useRef(null);
     const socket = useSocketContext();
+    const { name, room } = useMainContext();
 
     // Canvas Functions
 
@@ -94,6 +96,12 @@ export const CanvasProvider = ({ children }) => {
     }
 
     // Handle websockets
+    useEffect(() => {
+        if(socket) {
+            socket.emit('checkStrokeSave', { room: room });
+        }
+    }, []);
+
     useEffect(() => {
         if(socket) {
             socket.on('startDraw', data => {
