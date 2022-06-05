@@ -15,10 +15,10 @@ const CanvasStrokeWidth = ({ useCanvas }) => {
                 icon={<BsCircleFill style={{ width: `16px`, height: `16px`, margin: 'auto' }}/>}
             />
             { isPickingSW &&
-                <div class="absolute z-30 left-[48px] top-0 w-[300px] p-3 bg-slate-100 rounded-md">
+                <div className="absolute z-30 left-[48px] top-0 w-[300px] p-3 bg-slate-100 rounded-md">
                     <div 
                         onMouseDown={() => setIsPickingSW(!isPickingSW)}
-                        class="fixed inset-0"
+                        className="fixed inset-0"
                     ></div>
                     <Slider min={4} max={40} step={4} defaultValue={strokeWidth} onChange={changeStrokeWidth} />
                 </div>
