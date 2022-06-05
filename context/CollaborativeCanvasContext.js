@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { useMainContext } from '../context/MainContext';
 import { useSocketContext } from './SocketContext';
+import { isTouchDevice } from '../utils/functions';
 import { Tools } from '../constants';
 
 const CanvasContext = createContext();
@@ -103,6 +104,73 @@ export const CanvasProvider = ({ children }) => {
         document.removeEventListener('mouseup', handleMouseUp);
     }
 
+    const handleTouchStart = (event) => {
+        switch(selectedTool) {
+            case Tools.PAINTBRUSH:
+                setIsDrawing(true);
+                coord.x = event.touches[0].clientX - canvasRef.current.offsetLeft;
+                coord.y = event.touches[0].clientY - canvasRef.current.offsetTop;
+                break;
+            case Tools.ERASER:
+                setIsDrawing(true);
+                coord.x = event.touches[0].clientX - canvasRef.current.offsetLeft;
+                coord.y = event.touches[0].clientY - canvasRef.current.offsetTop;
+                break;
+        }
+
+        document.addEventListener('touchmove', handleTouchMove);
+        document.addEventListener('touchend', handleTouchEnd);
+    }
+
+    const handleTouchMove = (event) => {
+        switch(selectedTool) {
+            case Tools.PAINTBRUSH:
+                contextRef.current.lineWidth = strokeWidth;
+                contextRef.current.strokeStyle = `rgba(${colour.r}, ${colour.g}, ${colour.b}, ${colour.a})`;
+        
+                contextRef.current.beginPath();
+                contextRef.current.moveTo(coord.x, coord.y);
+                socket.emit('startDrawing', { coord, c: colour, sw: strokeWidth });
+        
+                coord.x = event.touches[0].clientX - canvasRef.current.offsetLeft;
+                coord.y = event.touches[0].clientY - canvasRef.current.offsetTop;
+        
+                contextRef.current.lineTo(coord.x, coord.y);
+                contextRef.current.stroke();
+                socket.emit('endDrawing', { coord });
+                break;
+            case Tools.ERASER:
+                contextRef.current.lineWidth = strokeWidth;
+                contextRef.current.strokeStyle = `rgba(255, 255, 255, 1)`;
+        
+                contextRef.current.beginPath();
+                contextRef.current.moveTo(coord.x, coord.y);
+                socket.emit('startDrawing', { coord, c: {r: 255, g: 255, b: 255, a: 1}, sw: strokeWidth });
+        
+                coord.x = event.touches[0].clientX - canvasRef.current.offsetLeft;
+                coord.y = event.touches[0].clientY - canvasRef.current.offsetTop;
+        
+                contextRef.current.lineTo(coord.x, coord.y);
+                contextRef.current.stroke();
+                socket.emit('endDrawing', { coord });
+                break;
+        }
+    }
+
+    const handleTouchEnd = (event) => {
+        switch(selectedTool) {
+            case Tools.PAINTBRUSH:
+                setIsDrawing(false);
+                break;
+            case Tools.ERASER:
+                setIsDrawing(false);
+                break;
+        }
+
+        document.removeEventListener('touchmove', handleTouchMove);
+        document.removeEventListener('touchend', handleTouchEnd);
+    }
+
     const changeTool = (tool) => {
         setSelectedTool(Tools[tool]);
     }
@@ -157,6 +225,7 @@ export const CanvasProvider = ({ children }) => {
                 contextRef,
                 prepareCanvas,
                 handleMouseDown,
+                handleTouchStart,
                 changeTool,
                 changeColour,
                 changeStrokeWidth,

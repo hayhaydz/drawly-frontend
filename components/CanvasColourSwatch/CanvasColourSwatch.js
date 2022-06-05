@@ -19,6 +19,7 @@ const CanvasColourSwatch = ({ useCanvas }) => {
                 <div className="fixed z-40 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                     <div 
                         onMouseDown={() => setIsPickingColour(!isPickingColour)}
+                        onTouchStart={() => setIsPickingColour(!isPickingColour)}
                         className="fixed inset-0"
                     ></div>
                     <PhotoshopPicker color={colour} onChange={changeColour} triangle="hide" />

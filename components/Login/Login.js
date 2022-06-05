@@ -64,11 +64,11 @@ const Login = () => {
     }
 
     return (
-        <div className="w-screen h-screen flex items-center justify-center">
-            <div className="relative max-w-lg w-full max-h-lg bg-slate-200 rounded p-6">
-                <h1 className="text-xl font-bold mb-6">Drawly.io</h1>
+        <div className="w-screen h-screen flex items-center justify-center px-2">
+            <div className="relative h-auto max-w-full w-full bg-slate-200 rounded p-6 sm:max-w-full">
+                <h1 className="text-xl font-bold mb-2 sm:mb-6">Drawly.io</h1>
                 { room !== '' &&
-                    <span className="absolute top-6 right-6 text-slate-500">Room ID: {room}</span>
+                    <span className="block mb-4 sm:absolute sm:top-6 sm:right-6 sm:text-slate-500">Room ID: {room}</span>
                 }
                 <div className="flex flex-col">
                     <input type="text" placeholder="User name" value={inputName} onChange={e => setInputName(e.target.value)} className="mb-2 p-2 rounded-md" />

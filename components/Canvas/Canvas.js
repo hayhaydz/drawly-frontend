@@ -6,6 +6,7 @@ const Canvas = () => {
         canvasRef,
         prepareCanvas,
         handleMouseDown,
+        handleTouchStart
     } = useCanvas();
 
     useEffect(() => {
@@ -15,6 +16,7 @@ const Canvas = () => {
     return  (
         <canvas
             onMouseDown={handleMouseDown}
+            onTouchStart={handleTouchStart}
             ref={canvasRef}
         />
     )
