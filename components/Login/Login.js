@@ -65,7 +65,7 @@ const Login = () => {
 
     return (
         <div className="w-screen h-screen flex items-center justify-center px-2">
-            <div className="relative h-auto max-w-full w-full bg-slate-200 rounded p-6 sm:max-w-full">
+            <div className="relative h-auto max-w-full w-full bg-slate-200 rounded p-6 sm:max-w-lg">
                 <h1 className="text-xl font-bold mb-2 sm:mb-6">Drawly.io</h1>
                 { room !== '' &&
                     <span className="block mb-4 sm:absolute sm:top-6 sm:right-6 sm:text-slate-500">Room ID: {room}</span>
