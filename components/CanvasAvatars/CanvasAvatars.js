@@ -11,7 +11,7 @@ import { CanvasButton } from '../';
 import { ToastNotification } from '../';
 
 const CanvasAvatars = () => {
-    const { room, logout } = useMainContext();
+    const { name, room, logout } = useMainContext();
     const { users } = useUsersContext();
     const socket = useSocketContext();
     const { isDrawing } = useCanvas();
@@ -45,7 +45,7 @@ const CanvasAvatars = () => {
                         return (
                             <li key={user.id}>
                                 <div 
-                                    data-tip={user.name} 
+                                    data-tip={user.name === name ? 'You' : user.name} 
                                     className="relative bg-slate-200 rounded-full"
                                     onMouseEnter={() => setIsTooltipVisible(true)}
                                     onMouseLeave={() => setIsTooltipVisible(false)}

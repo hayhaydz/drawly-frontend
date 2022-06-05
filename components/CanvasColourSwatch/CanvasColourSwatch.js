@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { BlockPicker } from 'react-color';
+import { PhotoshopPicker } from 'react-color';
 
 const CanvasColourSwatch = ({ useCanvas }) => {
     const [isPickingColour, setIsPickingColour] = useState(false);
     const { changeColour, colour } = useCanvas();
 
     return (
-        <div className="relative z-50 flex flex-col gap-0.5">
+        <div className="z-50 flex flex-col gap-0.5">
             <button 
                 onClick={() => setIsPickingColour(!isPickingColour)}
                 aria-label="Brush colour" 
@@ -16,12 +16,12 @@ const CanvasColourSwatch = ({ useCanvas }) => {
             >
             </button>
             { isPickingColour &&
-                <div class="absolute z-30 left-[48px] top-0">
+                <div class="fixed z-40 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
                     <div 
                         onMouseDown={() => setIsPickingColour(!isPickingColour)}
                         class="fixed inset-0"
                     ></div>
-                    <BlockPicker color={colour} onChange={changeColour} triangle="hide" />
+                    <PhotoshopPicker color={colour} onChange={changeColour} triangle="hide" />
                 </div>
             }
         </div>

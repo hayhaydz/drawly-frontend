@@ -5,7 +5,7 @@ const Canvas = () => {
     const {
         canvasRef,
         prepareCanvas,
-        handleMouseDown
+        handleMouseDown,
     } = useCanvas();
 
     useEffect(() => {

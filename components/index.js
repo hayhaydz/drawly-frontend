@@ -1,4 +1,5 @@
 export { default as ToastNotification } from './ToastNotification/ToastNotification';
+export { default as CustomCursor } from './CustomCursor/CustomCursor';
 export { default as Layout } from './Layout/Layout';
 export { default as Login } from './Login/Login';
 export { default as Canvas } from './Canvas/Canvas';
